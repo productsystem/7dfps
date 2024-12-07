@@ -1,27 +1,42 @@
-using UnityEditor;
+using System;
+using TMPro;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    public float damage = 10f;
-    public float range = 100f;
-    public Camera fpsCam;
+    public Transform firePoint;
+    public Rigidbody player;
+    public float maxCharge = 10f;
+    public float incrementRate = 5f;
+    public float decrementRate = 3f;
+    public TextMeshProUGUI chargeUI;
+    private float knockbackMagnitude;
+
+    void Start()
+    {
+        knockbackMagnitude = 0f;
+    }
 
     void Update()
     {
-        if(Input.GetButtonDown("Fire 1"))
+        knockbackMagnitude -= decrementRate * Time.deltaTime;
+        knockbackMagnitude = Mathf.Clamp(knockbackMagnitude, 0 , maxCharge);
+
+        if(Input.GetButtonDown("Fire1"))
         {
-            Shoot();
+            Knockback();
         }
+        if(Input.GetButton("Fire2"))
+        {
+            knockbackMagnitude += incrementRate * Time.deltaTime;
+        }
+        chargeUI.text = knockbackMagnitude.ToString();
     }
 
-    void Shoot()
+    void Knockback()
     {
-        RaycastHit ray;
-        if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward,out ray, range))
-        {
-            
-        }
-
+        Vector3 knockbackDir = -firePoint.forward;
+        player.AddForce(knockbackDir * knockbackMagnitude, ForceMode.Impulse);
+        knockbackMagnitude = 0;
     }
 }
