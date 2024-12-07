@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +10,7 @@ public class Gun : MonoBehaviour
     public float decrementRate = 3f;
     public TextMeshProUGUI chargeUI;
     private float knockbackMagnitude;
+    public GameObject impactSphere;
 
     void Start()
     {
@@ -24,6 +24,7 @@ public class Gun : MonoBehaviour
 
         if(Input.GetButtonDown("Fire1"))
         {
+            EnemyKnockBack();
             Knockback();
         }
         if(Input.GetButton("Fire2"))
@@ -38,5 +39,15 @@ public class Gun : MonoBehaviour
         Vector3 knockbackDir = -firePoint.forward;
         player.AddForce(knockbackDir * knockbackMagnitude, ForceMode.Impulse);
         knockbackMagnitude = 0;
+    }
+
+    void EnemyKnockBack()
+    {
+        GameObject a = Instantiate(impactSphere, firePoint.position, firePoint.rotation);
+        // if(a != null)
+        // {
+        //     Debug.Log(a.name);
+        // }
+        a.GetComponent<EnemyKnockBackSphere>().knockForce = knockbackMagnitude;
     }
 }
