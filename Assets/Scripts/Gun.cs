@@ -5,38 +5,65 @@ public class Gun : MonoBehaviour
 {
     public Transform firePoint;
     public Rigidbody player;
+    public GameObject bulletPrefab;
     public float vacuumRange = 20f;
     public float pullSpeed = 10f;
+    public float bulletSpeed = 10f;
     public float pullDistance = 1f;
     public float maxCharge = 10f;
     public float incrementRate = 5f;
     public float decrementRate = 3f;
+    public float knockbackMultiplier = 2f;
     public TextMeshProUGUI chargeUI;
     private float knockbackMagnitude;
+    private bool bulletMode;
+    private bool canVacuum;
     public Transform eyeCam;
     public GameObject impactSphere;
 
     void Start()
     {
+        bulletMode = false;
+        canVacuum = true;
         knockbackMagnitude = 0f;
+        knockbackMultiplier = 2f;
     }
 
     void Update()
     {
-        knockbackMagnitude -= decrementRate * Time.deltaTime;
-        knockbackMagnitude = Mathf.Clamp(knockbackMagnitude, 0 , maxCharge);
+        if(canVacuum)
+        {
+            knockbackMagnitude -= decrementRate * Time.deltaTime;
+            knockbackMagnitude = Mathf.Clamp(knockbackMagnitude, 0 , maxCharge);
+        }
 
         if(Input.GetButtonDown("Fire1"))
         {
-            EnemyKnockBack();
-            Knockback();
+            if(!bulletMode)
+            {
+                EnemyKnockBack();
+                Knockback();
+            }
+            else
+            {
+                Bullet();
+            }
         }
-        if(Input.GetButton("Fire2"))
+        if(Input.GetButton("Fire2") && canVacuum)
         {
             knockbackMagnitude += incrementRate * Time.deltaTime;
             Vacuum();
         }
-        chargeUI.text = knockbackMagnitude.ToString();
+        chargeUI.text = "Compressed Air : " + knockbackMagnitude.ToString();
+    }
+
+    void Bullet()
+    {
+        GameObject bullet = Instantiate(bulletPrefab,firePoint.transform.position, firePoint.transform.rotation);
+        Rigidbody bulletrb = bullet.GetComponent<Rigidbody>();
+        bulletrb.velocity = firePoint.forward * bulletSpeed;
+        bulletMode = false;
+        canVacuum = true;
     }
 
     void Vacuum()
@@ -50,9 +77,31 @@ public class Gun : MonoBehaviour
                 target.MovePosition(target.position + direction * pullSpeed * Time.deltaTime);
                 if(Vector3.Distance(target.position, eyeCam.position) <= pullDistance)
                 {
+                    string typeGet = target.GetComponent<EnemyBehaviour>().type;
+                    Upgrade(typeGet);
+                    canVacuum = false;
                     Destroy(target.gameObject);
                 }
             }
+        }
+    }
+
+    void Upgrade(string type)
+    {
+        if(type == "Static")
+        {
+            knockbackMagnitude = maxCharge;
+        }
+
+        if(type == "Strength")
+        {
+            knockbackMagnitude = maxCharge * knockbackMultiplier;
+        }
+
+        if(type == "Bullet")
+        {
+            bulletMode = true;
+            knockbackMagnitude = 0;
         }
     }
 
@@ -61,6 +110,7 @@ public class Gun : MonoBehaviour
         Vector3 knockbackDir = -firePoint.forward;
         player.AddForce(knockbackDir * knockbackMagnitude, ForceMode.Impulse);
         knockbackMagnitude = 0;
+        canVacuum = true;
     }
 
     void EnemyKnockBack()
