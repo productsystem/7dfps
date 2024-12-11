@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -15,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 4500;
     public float maxSpeed = 20;
     public bool grounded;
+    public TextMeshProUGUI tutorial;
     public LayerMask whatIsGround;
     
     public float counterMovement = 0.175f;
@@ -38,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     
     void Start()
     {
+        tutorial.text = "WASD to move";
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -192,5 +196,24 @@ public class PlayerMovement : MonoBehaviour
     private void StopGrounded()
     {
         grounded = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.name == "Tut1")
+        {
+            tutorial.text = "Hold Right Click to vacuum air";
+        }
+        if(other.name == "Tut2")
+        {
+            tutorial.text = "Press Left Click to release stored energy";
+            StartCoroutine(DestroyTutorial());
+        }
+    }
+
+    private IEnumerator DestroyTutorial()
+    {
+        yield return new WaitForSeconds(3f);
+        Destroy(tutorial.gameObject);
     }
 }

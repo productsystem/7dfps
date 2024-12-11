@@ -1,6 +1,6 @@
-using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Gun : MonoBehaviour
 {
@@ -9,10 +9,9 @@ public class Gun : MonoBehaviour
     public GameObject bulletPrefab;
     public ParticleSystem vacuumParticle;
     public RectTransform gaugePointer;
-    public float vacuumRange = 20f;
+    public float vacuumRange = 10f;
     public float vacuumAngle = 60f;
     public float shakeIntensity = 0.2f;
-    public float recoilAngle = 60f;
     public float shakeSpeed = 10f;
     public float pullSpeed = 10f;
     public float recoilSpeed = 10f;
@@ -20,9 +19,10 @@ public class Gun : MonoBehaviour
     public float pullDistance = 1f;
     public float maxCharge = 10f;
     public float incrementRate = 5f;
+    public int collectables = 0;
     public float decrementRate = 3f;
     public float knockbackMultiplier = 2f;
-    public TextMeshProUGUI chargeUI;
+    public TextMeshProUGUI collectablesUI;
     private float knockbackMagnitude;
     private bool bulletMode;
     private bool canVacuum;
@@ -33,6 +33,7 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
+        collectables = 0;
         gaugePointer = GameObject.Find("GaugePointer").GetComponent<RectTransform>();
         vacuumParticle.Stop();
         ogPos= transform.localPosition;
@@ -46,6 +47,10 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+        if(transform.position.y < -20f)
+        {
+            SceneManager.LoadScene(0);
+        }
         float knockMagPointer = Mathf.Lerp(52,-90,knockbackMagnitude/30f);
         gaugePointer.rotation = Quaternion.Euler(0,0,knockMagPointer);
         if(canVacuum)
@@ -78,7 +83,7 @@ public class Gun : MonoBehaviour
             if(vacuumParticle.isPlaying)
             vacuumParticle.Stop();
         }
-        chargeUI.text = "Compressed Air : " + String.Format("{0:0.00}",knockbackMagnitude);
+        collectablesUI.text = "Electrums : " + collectables;
     }
 
     void Bullet()
@@ -142,8 +147,8 @@ public class Gun : MonoBehaviour
                         if (Vector3.Distance(target.position, eyeCam.position) <= pullDistance)
                         {
                             string typeGet = target.GetComponent<EnemyBehaviour>().type;
-                            Upgrade(typeGet);
                             canVacuum = false;
+                            Upgrade(typeGet);
                             Destroy(target.gameObject);
                         }
                     }
@@ -172,6 +177,12 @@ public class Gun : MonoBehaviour
         if(type == "Static")
         {
             knockbackMagnitude = maxCharge;
+        }
+
+        if(type == "Collectable")
+        {
+            canVacuum = true;
+            collectables++;
         }
 
         if(type == "Strength")
