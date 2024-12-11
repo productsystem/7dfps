@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,8 +7,14 @@ public class Gun : MonoBehaviour
     public Transform firePoint;
     public Rigidbody player;
     public GameObject bulletPrefab;
+    public ParticleSystem vacuumParticle;
+    public RectTransform gaugePointer;
     public float vacuumRange = 20f;
+    public float shakeIntensity = 0.2f;
+    public float recoilAngle = 60f;
+    public float shakeSpeed = 10f;
     public float pullSpeed = 10f;
+    public float recoilSpeed = 10f;
     public float bulletSpeed = 10f;
     public float pullDistance = 1f;
     public float maxCharge = 10f;
@@ -18,19 +25,28 @@ public class Gun : MonoBehaviour
     private float knockbackMagnitude;
     private bool bulletMode;
     private bool canVacuum;
+    private Vector3 ogPos;
+    private Quaternion ogRot;
     public Transform eyeCam;
     public GameObject impactSphere;
 
     void Start()
     {
+        gaugePointer = GameObject.Find("GaugePointer").GetComponent<RectTransform>();
+        vacuumParticle.Stop();
+        ogPos= transform.localPosition;
+        ogRot = transform.localRotation;
         bulletMode = false;
         canVacuum = true;
         knockbackMagnitude = 0f;
         knockbackMultiplier = 2f;
+        gaugePointer.rotation = Quaternion.Euler(0,0,52);
     }
 
     void Update()
     {
+        float knockMagPointer = Mathf.Lerp(52,-90,knockbackMagnitude/30f);
+        gaugePointer.rotation = Quaternion.Euler(0,0,knockMagPointer);
         if(canVacuum)
         {
             knockbackMagnitude -= decrementRate * Time.deltaTime;
@@ -39,6 +55,7 @@ public class Gun : MonoBehaviour
 
         if(Input.GetButtonDown("Fire1"))
         {
+            ResetGun();
             if(!bulletMode)
             {
                 EnemyKnockBack();
@@ -54,7 +71,13 @@ public class Gun : MonoBehaviour
             knockbackMagnitude += incrementRate * Time.deltaTime;
             Vacuum();
         }
-        chargeUI.text = "Compressed Air : " + knockbackMagnitude.ToString();
+        if(Input.GetButtonUp("Fire2"))
+        {
+            ResetGun();
+            if(vacuumParticle.isPlaying)
+            vacuumParticle.Stop();
+        }
+        chargeUI.text = "Compressed Air : " + String.Format("{0:0.00}",knockbackMagnitude);
     }
 
     void Bullet()
@@ -68,6 +91,11 @@ public class Gun : MonoBehaviour
 
     void Vacuum()
     {
+        if(vacuumParticle.isPlaying == false)
+        {
+            vacuumParticle.Play();
+        }
+        GunShake();
         if(Physics.Raycast(eyeCam.position, eyeCam.forward, out RaycastHit ray, vacuumRange))
         {
             Rigidbody target = ray.collider.GetComponent<Rigidbody>();
@@ -84,6 +112,21 @@ public class Gun : MonoBehaviour
                 }
             }
         }
+    }
+
+    void GunShake()
+    {
+        Vector3 shakePos = ogPos + UnityEngine.Random.insideUnitSphere * shakeIntensity;
+        float randos = UnityEngine.Random.Range(-shakeIntensity, shakeIntensity);
+        Quaternion shakeRot = ogRot * Quaternion.Euler(randos, randos, randos);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, shakePos, Time.deltaTime * shakeSpeed);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, shakeRot, Time.deltaTime * shakeSpeed);
+    }
+
+    void ResetGun()
+    {
+        transform.localPosition = Vector3.Lerp(transform.localPosition, ogPos, Time.deltaTime * shakeSpeed);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, ogRot, Time.deltaTime * shakeSpeed);
     }
 
     void Upgrade(string type)
@@ -116,21 +159,6 @@ public class Gun : MonoBehaviour
     void EnemyKnockBack()
     {
         GameObject a = Instantiate(impactSphere, firePoint.position, firePoint.rotation);
-        // if(a != null)
-        // {
-        //     Debug.Log(a.name);
-        // }
         a.GetComponent<EnemyKnockBackSphere>().knockForce = knockbackMagnitude;
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(firePoint.position, firePoint.position + firePoint.forward * 2);
-        Gizmos.DrawSphere(firePoint.position + firePoint.forward * 2, 0.1f);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(eyeCam.position, eyeCam.forward * vacuumRange);
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(eyeCam.position, pullDistance);
     }
 }
