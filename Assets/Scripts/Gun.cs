@@ -10,6 +10,7 @@ public class Gun : MonoBehaviour
     public ParticleSystem vacuumParticle;
     public RectTransform gaugePointer;
     public float vacuumRange = 20f;
+    public float vacuumAngle = 60f;
     public float shakeIntensity = 0.2f;
     public float recoilAngle = 60f;
     public float shakeSpeed = 10f;
@@ -89,7 +90,7 @@ public class Gun : MonoBehaviour
         canVacuum = true;
     }
 
-    void Vacuum()
+    /*void Vacuum()
     {
         if(vacuumParticle.isPlaying == false)
         {
@@ -109,6 +110,43 @@ public class Gun : MonoBehaviour
                     Upgrade(typeGet);
                     canVacuum = false;
                     Destroy(target.gameObject);
+                }
+            }
+        }
+    } */
+    void Vacuum()
+    {
+        if(vacuumParticle.isPlaying == false)
+        {
+            vacuumParticle.Play();
+        }
+        GunShake();
+        Collider[] hitColliders = Physics.OverlapSphere(eyeCam.position, vacuumRange);
+
+        foreach (Collider collider in hitColliders)
+        {
+            if(collider.CompareTag("Enemy"))
+            {
+                Vector3 directionToTarget = (collider.transform.position - eyeCam.position).normalized;
+                float angleBetween = Vector3.Angle(eyeCam.forward, directionToTarget);
+
+                if (angleBetween <= vacuumAngle / 2f)
+                {
+                    Rigidbody target = collider.GetComponent<Rigidbody>();
+
+                    if (target != null)
+                    {
+                        Vector3 pullDirection = (eyeCam.position - target.position).normalized;
+                        target.MovePosition(target.position + pullDirection * pullSpeed * Time.deltaTime);
+
+                        if (Vector3.Distance(target.position, eyeCam.position) <= pullDistance)
+                        {
+                            string typeGet = target.GetComponent<EnemyBehaviour>().type;
+                            Upgrade(typeGet);
+                            canVacuum = false;
+                            Destroy(target.gameObject);
+                        }
+                    }
                 }
             }
         }
