@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -210,6 +211,14 @@ public class PlayerMovement : MonoBehaviour
             tutorial.text = "Press Left Click to release stored energy";
             Destroy(other.gameObject);
             StartCoroutine(DestroyTutorial());
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.CompareTag("Hazard"))
+        {
+            SceneManager.LoadScene(0);
         }
     }
 
