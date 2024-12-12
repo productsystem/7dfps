@@ -203,10 +203,12 @@ public class PlayerMovement : MonoBehaviour
         if(other.name == "Tut1")
         {
             tutorial.text = "Hold Right Click to vacuum air";
+            Destroy(other.gameObject);
         }
         if(other.name == "Tut2")
         {
             tutorial.text = "Press Left Click to release stored energy";
+            Destroy(other.gameObject);
             StartCoroutine(DestroyTutorial());
         }
     }

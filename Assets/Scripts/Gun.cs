@@ -4,28 +4,35 @@ using UnityEngine.SceneManagement;
 
 public class Gun : MonoBehaviour
 {
-    public Transform firePoint;
-    public Rigidbody player;
-    public GameObject bulletPrefab;
-    public ParticleSystem vacuumParticle;
-    public RectTransform gaugePointer;
+    [Header("Vacuum Controls")]
     public float vacuumRange = 10f;
     public float vacuumAngle = 60f;
+    public float pullSpeed = 10f;
+    public float pullDistance = 1f;
+    public ParticleSystem vacuumParticle;
+    private bool canVacuum;
+    [Space(10)]
+    [Header("Knockback")]
+    public Transform firePoint;
+    public Rigidbody player;
+    public float guagePointerInitialAngle = 52f;
+    public float gaugePointerFinalAngle = -90f;
+    private RectTransform gaugePointer;
     public float shakeIntensity = 0.2f;
     public float shakeSpeed = 10f;
-    public float pullSpeed = 10f;
-    public float recoilSpeed = 10f;
-    public float bulletSpeed = 10f;
-    public float pullDistance = 1f;
     public float maxCharge = 10f;
     public float incrementRate = 5f;
-    public int collectables = 0;
     public float decrementRate = 3f;
     public float knockbackMultiplier = 2f;
-    public TextMeshProUGUI collectablesUI;
     private float knockbackMagnitude;
+
+    [Space(10)]
+    [Header("Collectable Interface")]
+    public GameObject bulletPrefab;
+    public float bulletSpeed = 10f;
+    public int collectables = 0;
+    public TextMeshProUGUI collectablesUI;
     private bool bulletMode;
-    private bool canVacuum;
     private Vector3 ogPos;
     private Quaternion ogRot;
     public Transform eyeCam;
@@ -42,17 +49,13 @@ public class Gun : MonoBehaviour
         canVacuum = true;
         knockbackMagnitude = 0f;
         knockbackMultiplier = 2f;
-        gaugePointer.rotation = Quaternion.Euler(0,0,52);
+        gaugePointer.rotation = Quaternion.Euler(0,0,guagePointerInitialAngle);
     }
 
     void Update()
     {
-        if(transform.position.y < -20f)
-        {
-            SceneManager.LoadScene(0);
-        }
-        float knockMagPointer = Mathf.Lerp(52,-90,knockbackMagnitude/30f);
-        gaugePointer.rotation = Quaternion.Euler(0,0,knockMagPointer);
+        GaugeBar();
+
         if(canVacuum)
         {
             knockbackMagnitude -= decrementRate * Time.deltaTime;
@@ -86,6 +89,22 @@ public class Gun : MonoBehaviour
         collectablesUI.text = "Electrums : " + collectables;
     }
 
+
+    
+    void DeathPlane()
+    {
+        if(transform.position.y < -20f)
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+
+    void GaugeBar()
+    {
+        float knockMagPointer = Mathf.Lerp(52,gaugePointerFinalAngle,knockbackMagnitude/30f);
+        gaugePointer.rotation = Quaternion.Euler(0,0,knockMagPointer);
+    }
+
     void Bullet()
     {
         GameObject bullet = Instantiate(bulletPrefab,firePoint.transform.position, firePoint.transform.rotation);
@@ -95,30 +114,6 @@ public class Gun : MonoBehaviour
         canVacuum = true;
     }
 
-    /*void Vacuum()
-    {
-        if(vacuumParticle.isPlaying == false)
-        {
-            vacuumParticle.Play();
-        }
-        GunShake();
-        if(Physics.Raycast(eyeCam.position, eyeCam.forward, out RaycastHit ray, vacuumRange))
-        {
-            Rigidbody target = ray.collider.GetComponent<Rigidbody>();
-            if(target != null && ray.collider.CompareTag("Enemy"))
-            {
-                Vector3 direction = (eyeCam.position - target.position).normalized;
-                target.MovePosition(target.position + direction * pullSpeed * Time.deltaTime);
-                if(Vector3.Distance(target.position, eyeCam.position) <= pullDistance)
-                {
-                    string typeGet = target.GetComponent<EnemyBehaviour>().type;
-                    Upgrade(typeGet);
-                    canVacuum = false;
-                    Destroy(target.gameObject);
-                }
-            }
-        }
-    } */
     void Vacuum()
     {
         if(vacuumParticle.isPlaying == false)

@@ -5,15 +5,9 @@ public class Bullet : MonoBehaviour
     public float bulletKnockback = 10f;
     void Start()
     {
-        // Debug.Log("i spawned");
         Destroy(gameObject, 2f);
     }
-
-    // void Update()
-    // {
-    //     Debug.Log(GetComponent<Rigidbody>().velocity);
-    // }
-
+    
     void OnCollisionEnter(Collision collision)
     {
         if(collision.collider.CompareTag("Enemy"))
