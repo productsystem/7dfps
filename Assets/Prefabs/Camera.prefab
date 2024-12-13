@@ -164,13 +164,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3523852094185841403}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: -0.1217, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: -0.0998, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1626427930726951022}
-  m_LocalEulerAnglesHint: {x: 180, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 270, z: 0}
 --- !u!198 &272604520836954022
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -188,7 +188,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -307,7 +307,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -2.68
+      scalar: 3.8
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -803,7 +803,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 0
+    angle: 4.15
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -889,7 +889,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.36
+      value: 0.09
       mode: 0
       spread: 0
       speed:
@@ -4915,7 +4915,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5169,23 +5169,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7505f4126cd956e47b1ade82da68ce4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vacuumRange: 10
+  vacuumAngle: 60
+  pullSpeed: 10
+  pullDistance: 5
+  vacuumParticle: {fileID: 272604520836954022}
   firePoint: {fileID: 2597650582331493318}
   player: {fileID: 0}
-  bulletPrefab: {fileID: 4855918871607974865, guid: cf42e9426bc010b4e9f73ac11ba96057,
-    type: 3}
-  vacuumRange: 30
-  shakeIntensity: 0.2
-  recoilAngle: 40
+  guagePointerInitialAngle: 52
+  gaugePointerFinalAngle: -90
+  shakeIntensity: 0.15
   shakeSpeed: 10
-  pullSpeed: 10
-  recoilSpeed: 10
-  bulletSpeed: 45
-  pullDistance: 2
   maxCharge: 30
-  incrementRate: 12
+  incrementRate: 16
   decrementRate: 4
   knockbackMultiplier: 2
-  chargeUI: {fileID: 0}
+  bulletPrefab: {fileID: 4855918871607974865, guid: cf42e9426bc010b4e9f73ac11ba96057,
+    type: 3}
+  bulletSpeed: 10
+  collectablesUI: {fileID: 0}
   eyeCam: {fileID: 3387554427220998412}
   impactSphere: {fileID: 1355352164771374121, guid: 15dfe30d3569034478bac824e85378a2,
     type: 3}

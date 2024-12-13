@@ -178,6 +178,7 @@ public class Gun : MonoBehaviour
 
         if(type == "Collectable")
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Electrum");
             canVacuum = true;
             currentLevelCollectables++;
             LevelLoader.collectables++;
@@ -185,11 +186,13 @@ public class Gun : MonoBehaviour
 
         if(type == "Strength")
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Super");
             knockbackMagnitude = maxCharge * knockbackMultiplier;
         }
 
         if(type == "Bullet")
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Void");
             bulletMode = true;
             knockbackMagnitude = 0;
         }
@@ -197,6 +200,10 @@ public class Gun : MonoBehaviour
 
     void Knockback()
     {
+        if(knockbackMagnitude > 0)
+        {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Knock");
+        }
         Vector3 knockbackDir = -firePoint.forward;
         player.AddForce(knockbackDir * knockbackMagnitude, ForceMode.Impulse);
         knockbackMagnitude = 0;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -201,6 +202,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.name == "EndTut")
+        {
+            Destroy(other.gameObject);
+            tutorial.text = "";
+        }
         if(other.name == "Tut1")
         {
             tutorial.text = "Hold Right Click to vacuum air";
@@ -209,6 +215,18 @@ public class PlayerMovement : MonoBehaviour
         if(other.name == "Tut2")
         {
             tutorial.text = "Press Left Click to release stored energy";
+            Destroy(other.gameObject);
+            StartCoroutine(DestroyTutorial());
+        }
+        if(other.name == "Tut3")
+        {
+            tutorial.text = "Void Cubes grant a temporary Voidshot to break down Void Walls";
+            Destroy(other.gameObject);
+            StartCoroutine(DestroyTutorial());
+        }
+        if(other.name == "Tut4")
+        {
+            tutorial.text = "Overpump Cube grants a temporary boosted knockback";
             Destroy(other.gameObject);
             StartCoroutine(DestroyTutorial());
         }
@@ -226,6 +244,6 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator DestroyTutorial()
     {
         yield return new WaitForSeconds(3f);
-        Destroy(tutorial.gameObject);
+        tutorial.text = "";
     }
 }

@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour
     public float bulletKnockback = 10f;
     void Start()
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Bullet");
         Destroy(gameObject, 2f);
     }
     
@@ -18,6 +19,11 @@ public class Bullet : MonoBehaviour
             enemyrb.AddForce(knockDirection * bulletKnockback, ForceMode.Impulse);
             Destroy(gameObject);
         }
-        Destroy(gameObject);
+        if(collision.collider.CompareTag("Bulletable"))
+        {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("VoidWall");
+            Destroy(collision.collider.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

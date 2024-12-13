@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Hazard
+  - Bulletable
   layers:
   - Default
   - TransparentFX
