@@ -218,7 +218,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if(collision.collider.CompareTag("Hazard"))
         {
-            SceneManager.LoadScene(0);
+            GameObject.Find("Gun").GetComponent<Gun>().ResetCollectables();
+            SceneManager.LoadScene(LevelLoader.levelNum);
         }
     }
 

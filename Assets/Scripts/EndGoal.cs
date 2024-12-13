@@ -4,9 +4,14 @@ using UnityEngine.SceneManagement;
 public class EndGoal : MonoBehaviour
 {
     public Transform player;
+    private GameObject levelLoader;
     public float pullForce = 20f;
     public float pullRadius = 2f;
     private bool isPulling = false;
+    void Awake()
+    {
+        levelLoader = GameObject.Find("LevelLoader");
+    }
 
     void Update()
     {
@@ -27,7 +32,8 @@ public class EndGoal : MonoBehaviour
     {
         if (other.CompareTag("Player") && isPulling)
         {
-            SceneManager.LoadScene(0);
+            levelLoader.GetComponent<LevelLoader>().IncrementLevels();
+            SceneManager.LoadScene(LevelLoader.levelNum);
         }
     }
 }

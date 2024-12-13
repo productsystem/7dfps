@@ -30,8 +30,8 @@ public class Gun : MonoBehaviour
     [Header("Collectable Interface")]
     public GameObject bulletPrefab;
     public float bulletSpeed = 10f;
-    public int collectables = 0;
     public TextMeshProUGUI collectablesUI;
+    private int currentLevelCollectables = 0;
     private bool bulletMode;
     private Vector3 ogPos;
     private Quaternion ogRot;
@@ -40,7 +40,7 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
-        collectables = 0;
+        currentLevelCollectables = 0;
         gaugePointer = GameObject.Find("GaugePointer").GetComponent<RectTransform>();
         vacuumParticle.Stop();
         ogPos= transform.localPosition;
@@ -54,6 +54,8 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+        DeathPlane();
+
         GaugeBar();
 
         if(canVacuum)
@@ -86,7 +88,7 @@ public class Gun : MonoBehaviour
             if(vacuumParticle.isPlaying)
             vacuumParticle.Stop();
         }
-        collectablesUI.text = "Electrums : " + collectables;
+        collectablesUI.text = "Electrums : " + LevelLoader.collectables;
     }
 
 
@@ -177,7 +179,8 @@ public class Gun : MonoBehaviour
         if(type == "Collectable")
         {
             canVacuum = true;
-            collectables++;
+            currentLevelCollectables++;
+            LevelLoader.collectables++;
         }
 
         if(type == "Strength")
@@ -204,5 +207,10 @@ public class Gun : MonoBehaviour
     {
         GameObject a = Instantiate(impactSphere, firePoint.position, firePoint.rotation);
         a.GetComponent<EnemyKnockBackSphere>().knockForce = knockbackMagnitude;
+    }
+
+    public void ResetCollectables()
+    {
+        LevelLoader.collectables -= currentLevelCollectables;
     }
 }
