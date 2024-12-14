@@ -6,7 +6,6 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Bullet");
-        Destroy(gameObject, 2f);
     }
     
     void OnCollisionEnter(Collision collision)

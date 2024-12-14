@@ -38,6 +38,8 @@ public class Gun : MonoBehaviour
     private Quaternion ogRot;
     public Transform eyeCam;
     public GameObject impactSphere;
+    [SerializeField]
+    private bool dropper;
 
     void Start()
     {
@@ -56,6 +58,14 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+        if(LevelLoader.levelNum == 4)
+        {
+            dropper = true;
+        }
+        else
+        {
+            dropper = false;
+        }
         DeathPlane();
 
         GaugeBar();
@@ -97,9 +107,16 @@ public class Gun : MonoBehaviour
     
     void DeathPlane()
     {
-        if(transform.position.y < -20f)
+        if(transform.position.y < -20f && !dropper)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(LevelLoader.levelNum);
+        }
+        else if(dropper)
+        {
+            if(transform.position.y < -200f)
+            {
+                SceneManager.LoadScene(LevelLoader.levelNum);
+            }
         }
     }
 
