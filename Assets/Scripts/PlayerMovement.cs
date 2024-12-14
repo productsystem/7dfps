@@ -241,6 +241,10 @@ public class PlayerMovement : MonoBehaviour
             GameObject.Find("Gun").GetComponent<Gun>().ResetCollectables();
             SceneManager.LoadScene(LevelLoader.levelNum);
         }
+        if(collision.collider.CompareTag("Moon"))
+        {
+            SceneManager.LoadScene(LevelLoader.levelNum+1);
+        }
     }
 
     private IEnumerator DestroyTutorial()

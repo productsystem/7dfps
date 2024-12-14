@@ -291,9 +291,9 @@ RectTransform:
   - {fileID: 114649389}
   m_Father: {fileID: 1929034816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -190}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 119}
   m_SizeDelta: {x: 388.097, y: 74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &126524030
@@ -671,10 +671,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1929034816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 145}
-  m_SizeDelta: {x: 680.0647, y: 126.9165}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -164}
+  m_SizeDelta: {x: 1297, y: 126.916504}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1367291078
 MonoBehaviour:
@@ -696,7 +696,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You Won
+  m_text: You Reached The Moon
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e5fb39c0a6f93e40a9f84399efc2a8e, type: 2}
   m_sharedMaterial: {fileID: 6874395982432110171, guid: 2e5fb39c0a6f93e40a9f84399efc2a8e,
