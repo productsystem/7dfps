@@ -390,6 +390,106 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126524028}
   m_CullTransparentMesh: 1
+--- !u!1 &472610820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 472610822}
+  - component: {fileID: 472610821}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!114 &472610821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472610820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4b4485eed51fa2429ce4caf23059d10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - clip: {fileID: 8300000, guid: 1ebae5cb4d34c8f4a8307816b2137dc9, type: 3}
+    soundName: Knock
+    volume: 1
+    source: {fileID: 0}
+    isLoopable: 0
+  - clip: {fileID: 8300000, guid: 58c618f0af47a474498879a090e93d36, type: 3}
+    soundName: Electrum
+    volume: 1
+    source: {fileID: 0}
+    isLoopable: 0
+  - clip: {fileID: 8300000, guid: 1e78f8e814abec14eae56302a7c8b282, type: 3}
+    soundName: Super
+    volume: 1
+    source: {fileID: 0}
+    isLoopable: 0
+  - clip: {fileID: 8300000, guid: 2e5ae2a7bbe56c84bb93518eebc13bda, type: 3}
+    soundName: VoidWall
+    volume: 1
+    source: {fileID: 0}
+    isLoopable: 0
+  - clip: {fileID: 8300000, guid: 77016010d7114ac468e8cc51189afd29, type: 3}
+    soundName: Bullet
+    volume: 1
+    source: {fileID: 0}
+    isLoopable: 0
+  - clip: {fileID: 8300000, guid: c22832024cb26a841bdf82b1762c3250, type: 3}
+    soundName: Void
+    volume: 1
+    source: {fileID: 0}
+    isLoopable: 0
+  - clip: {fileID: 8300000, guid: 1ece994a6235f754db2ca606c60842b2, type: 3}
+    soundName: Jump
+    volume: 1
+    source: {fileID: 0}
+    isLoopable: 0
+  - clip: {fileID: 8300000, guid: d3b86c77697371947805e5fe1c85d8f2, type: 3}
+    soundName: VacOn
+    volume: 0.15
+    source: {fileID: 0}
+    isLoopable: 1
+  - clip: {fileID: 8300000, guid: 4ac65472583016145a5a5a222b256b31, type: 3}
+    soundName: VacOff
+    volume: 0.15
+    source: {fileID: 0}
+    isLoopable: 0
+  - clip: {fileID: 8300000, guid: d8334e3955d13324f861924ea69e31c8, type: 3}
+    soundName: Menu
+    volume: 0.25
+    source: {fileID: 0}
+    isLoopable: 1
+  - clip: {fileID: 8300000, guid: d63cbf1ec27391b4f85c988a4f52582f, type: 3}
+    soundName: Levels
+    volume: 0.25
+    source: {fileID: 0}
+    isLoopable: 1
+--- !u!4 &472610822
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472610820}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &831933685
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,3 +1465,4 @@ SceneRoots:
   - {fileID: 1092369246}
   - {fileID: 833466657}
   - {fileID: 1705918786}
+  - {fileID: 472610822}

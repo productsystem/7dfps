@@ -1,6 +1,8 @@
 using System;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -41,6 +43,24 @@ public class AudioManager : MonoBehaviour
         if (sound != null && sound.source.isPlaying)
         {
             sound.source.Stop();
+        }
+    }
+
+    public void Update()
+    {
+        if(SceneManager.GetActiveScene().ToString() == "Main Menu" || SceneManager.GetActiveScene().ToString() == "End Screen")
+        {
+            if(!IsPlaying("Menu"))
+            {
+                Play("Menu");
+            }
+        }
+        else
+        {
+            if(!IsPlaying("Levels"))
+            {
+                Play("Levels");
+            }
         }
     }
 }
