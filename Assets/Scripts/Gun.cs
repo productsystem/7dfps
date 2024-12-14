@@ -10,6 +10,7 @@ public class Gun : MonoBehaviour
     public float pullSpeed = 10f;
     public float pullDistance = 1f;
     public ParticleSystem vacuumParticle;
+    public ParticleSystem knockbackParticle;
     private bool canVacuum;
     [Space(10)]
     [Header("Knockback")]
@@ -30,7 +31,7 @@ public class Gun : MonoBehaviour
     [Header("Collectable Interface")]
     public GameObject bulletPrefab;
     public float bulletSpeed = 10f;
-    public TextMeshProUGUI collectablesUI;
+    private TextMeshProUGUI collectablesUI;
     private int currentLevelCollectables = 0;
     private bool bulletMode;
     private Vector3 ogPos;
@@ -40,6 +41,7 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
+        collectablesUI = GameObject.Find("Electrums").GetComponent<TextMeshProUGUI>();
         currentLevelCollectables = 0;
         gaugePointer = GameObject.Find("GaugePointer").GetComponent<RectTransform>();
         vacuumParticle.Stop();
@@ -109,6 +111,7 @@ public class Gun : MonoBehaviour
 
     void Bullet()
     {
+        knockbackParticle.Play();
         GameObject bullet = Instantiate(bulletPrefab,firePoint.transform.position, firePoint.transform.rotation);
         Rigidbody bulletrb = bullet.GetComponent<Rigidbody>();
         bulletrb.velocity = firePoint.forward * bulletSpeed;
@@ -202,6 +205,7 @@ public class Gun : MonoBehaviour
     {
         if(knockbackMagnitude > 0)
         {
+            knockbackParticle.Play();
             GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Knock");
         }
         Vector3 knockbackDir = -firePoint.forward;

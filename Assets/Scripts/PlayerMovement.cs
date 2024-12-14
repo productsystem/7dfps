@@ -43,7 +43,8 @@ public class PlayerMovement : MonoBehaviour
     
     void Start()
     {
-        tutorial.text = "WASD to move";
+        tutorial = GameObject.Find("Tutorial").GetComponent<TextMeshProUGUI>();
+        tutorial.text = "WASD to move. Space to jump";
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -99,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (grounded && readyToJump)
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("Jump");
             readyToJump = false;
             rb.AddForce(Vector2.up * jumpForce * 1.5f);
             rb.AddForce(normalVector * jumpForce * 0.5f);
