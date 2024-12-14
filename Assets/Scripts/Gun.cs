@@ -43,6 +43,11 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
+        AudioManager audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        if (audioManager.IsPlaying("VacOn"))
+        {
+            audioManager.Stop("VacOn");
+        }
         collectablesUI = GameObject.Find("Electrums").GetComponent<TextMeshProUGUI>();
         currentLevelCollectables = 0;
         gaugePointer = GameObject.Find("GaugePointer").GetComponent<RectTransform>();
@@ -96,6 +101,8 @@ public class Gun : MonoBehaviour
         }
         if(Input.GetButtonUp("Fire2"))
         {
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Stop("VacOn");
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("VacOff");
             ResetGun();
             if(vacuumParticle.isPlaying)
             vacuumParticle.Stop();
@@ -138,6 +145,11 @@ public class Gun : MonoBehaviour
 
     void Vacuum()
     {
+        AudioManager audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        if (!audioManager.IsPlaying("VacOn"))
+        {
+            audioManager.Play("VacOn");
+        }
         if(vacuumParticle.isPlaying == false)
         {
             vacuumParticle.Play();

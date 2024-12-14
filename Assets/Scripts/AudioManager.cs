@@ -13,6 +13,7 @@ public class AudioManager : MonoBehaviour
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
             s.source.volume = s.volume;
+            s.source.loop = s.isLoopable;
         }
     }
 
@@ -22,5 +23,24 @@ public class AudioManager : MonoBehaviour
         if(s == null)
             return;
         s.source.Play();
+    }
+
+    public bool IsPlaying(string n)
+    {
+        Sound sound = Array.Find(sounds, s => s.soundName == n);
+        if (sound != null)
+        {
+            return sound.source.isPlaying;
+        }
+        return false;
+    }
+
+    public void Stop(string n)
+    {
+        Sound sound = Array.Find(sounds, s => s.soundName == n);
+        if (sound != null && sound.source.isPlaying)
+        {
+            sound.source.Stop();
+        }
     }
 }
